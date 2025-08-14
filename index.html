@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Independence Day 🇮🇳 — Math & Compute Theme</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --saffron:#FF9933; /* Deep saffron */
+      --white:#FFFFFF;   /* White */
+      --green:#138808;   /* India green */
+      --navy:#000080;    /* Navy (chakra) */
+      --bg-dark:#0a0f1f; /* Deep space */
+    }
+    html,body{height:100%;}
+    body{font-family:"Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background: radial-gradient(1000px 800px at 50% 0%, #0f1a3b 0%, #070b18 60%, #05070f 100%);}
+
+    /* Subtle scanline effect */
+    .scanlines::after{
+      content:""; position:fixed; inset:0; pointer-events:none; background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px);
+      mix-blend-mode:soft-light;
+    }
+
+    /* Glow utility */
+    .neon{ text-shadow: 0 0 8px rgba(19,136,8,.6), 0 0 16px rgba(255,153,51,.35); }
+
+    /* Waving flag via SVG filter animation */
+    @keyframes waveNoise {
+      0%   { filter: url(#wave); }
+      50%  { filter: url(#wave2); }
+      100% { filter: url(#wave); }
+    }
+    .flag-animate{ animation: waveNoise 6s ease-in-out infinite; }
+
+    /* Floating chips */
+    .chip{ backdrop-filter: blur(6px); }
+
+    /* CTA hover */
+    .btn-glow:hover{ box-shadow: 0 0 0 6px rgba(255,153,51,.15), 0 0 0 12px rgba(19,136,8,.12); }
+
+    /* Lotus orbiting petals */
+    @keyframes floatPetal{ 0%{ transform: translateY(0) rotate(0deg);} 50%{ transform: translateY(-10px) rotate(6deg);} 100%{ transform: translateY(0) rotate(0deg);} }
+
+    /* Chakra spin hint on hover */
+    .chakra:hover{ transform: rotate(360deg); transition: transform 3s ease-in-out; }
+
+    /* Footer ribbon */
+    .tricolor-ribbon{ background: linear-gradient(90deg, var(--saffron) 0%, var(--saffron) 33.33%, var(--white) 33.33%, var(--white) 66.66%, var(--green) 66.66%, var(--green) 100% ); }
+
+    /* Ensure canvases render behind content */
+    canvas.bg-layer{ position: fixed; inset: 0; z-index: -2; }
+    canvas.fx-layer{ position: fixed; inset: 0; z-index: -1; pointer-events:none; }
+  </style>
+</head>
+<body class="scanlines text-slate-100">
+  <!-- Background: Matrix rain & equations -->
+  <canvas id="matrix" class="bg-layer"></canvas>
+  <!-- Foreground FX: Rose-curve (mathematical flower) particles -->
+  <canvas id="roses" class="fx-layer"></canvas>
+
+  <main class="min-h-screen flex flex-col items-center justify-center gap-10 px-4">
+    <!-- Header / Title -->
+    <section class="text-center">
+      <h1 class="text-3xl sm:text-5xl md:text-6xl font-bold neon tracking-tight">
+        Happy Independence Day, India
+      </h1>
+      <p class="mt-3 text-sm sm:text-base text-slate-300">
+        15 August · Celebrating freedom with code, math, and design
+      </p>
+    </section>
+
+    <!-- Flag Card -->
+    <section class="w-full max-w-4xl">
+      <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-white/5 chip">
+        <!-- Decorative binary corners -->
+        <div class="absolute left-3 top-3 text-xs text-emerald-300/80 select-none">0x1947</div>
+        <div class="absolute right-3 top-3 text-xs text-orange-300/80 select-none">#जय_हिंद</div>
+        <div class="absolute left-3 bottom-3 text-xs text-sky-300/80 select-none">π ≈ 3.14159</div>
+        <div class="absolute right-3 bottom-3 text-xs text-amber-200/80 select-none">e ≈ 2.71828</div>
+
+        <!-- Responsive SVG Indian Flag with Chakra (24 spokes) -->
+        <div class="p-5 sm:p-8">
+          <svg viewBox="0 0 300 200" class="w-full flag-animate rounded-xl" aria-label="Flag of India">
+            <defs>
+              <!-- Wave filters for gentle fabric motion -->
+              <filter id="wave" x="-20%" y="-20%" width="140%" height="140%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="2"/>
+                <feDisplacementMap in="SourceGraphic" scale="4"/>
+              </filter>
+              <filter id="wave2" x="-20%" y="-20%" width="140%" height="140%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.015 0.025" numOctaves="2" seed="7"/>
+                <feDisplacementMap in="SourceGraphic" scale="6"/>
+              </filter>
+            </defs>
+
+            <!-- Tricolor bands (correct order & equal height) -->
+            <rect x="0" y="0" width="300" height="66.666" fill="var(--saffron)"/>
+            <rect x="0" y="66.666" width="300" height="66.666" fill="var(--white)"/>
+            <rect x="0" y="133.333" width="300" height="66.666" fill="var(--green)"/>
+
+            <!-- Ashoka Chakra (24 spokes) centered -->
+            <g transform="translate(150,100)" class="chakra">
+              <circle r="21.333" fill="none" stroke="var(--navy)" stroke-width="3"/>
+              <!-- 24 spokes -->
+              <g stroke="var(--navy)" stroke-width="2">
+                <!-- Generate spokes by rotation -->
+                <!-- We'll place 24 lines, every 15 degrees -->
+                <!-- Using manual repetition for broad compatibility -->
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(0)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(15)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(30)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(45)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(60)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(75)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(90)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(105)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(120)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(135)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(150)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(165)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(180)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(195)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(210)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(225)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(240)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(255)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(270)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(285)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(300)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(315)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(330)"/>
+                <line x1="0" y1="0" x2="0" y2="-21.333" transform="rotate(345)"/>
+              </g>
+              <!-- Chakra hub -->
+              <circle r="2.6" fill="var(--navy)"/>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Tech chips -->
+        <div class="px-5 pb-5 sm:px-8 sm:pb-8 flex flex-wrap gap-2">
+          <span class="px-3 py-1 rounded-full text-xs bg-emerald-500/15 border border-emerald-300/20">∑ code = freedom</span>
+          <span class="px-3 py-1 rounded-full text-xs bg-orange-500/15 border border-orange-300/20">λ innovation → progress</span>
+          <span class="px-3 py-1 rounded-full text-xs bg-sky-500/15 border border-sky-300/20">f(भारत) = अजेय</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls -->
+    <section class="flex flex-wrap items-center justify-center gap-3">
+      <button id="burst" class="btn-glow px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition">Burst Flowers (Math)</button>
+      <button id="toggleRain" class="btn-glow px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition">Toggle Matrix Rain</button>
+      <button id="tricolor" class="btn-glow px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition">Tricolor Bloom</button>
+    </section>
+
+    <!-- Stylized lotus row -->
+    <section class="w-full max-w-4xl grid grid-cols-5 gap-3 opacity-90">
+      <!-- Five minimal lotus icons -->
+      <div class="flex items-center justify-center">
+        <svg width="80" height="50" viewBox="0 0 80 50" class="animate-[floatPetal_4s_ease-in-out_infinite]">
+          <g fill="none" stroke="#ff99aa" stroke-width="2">
+            <path d="M40 30 C 35 10, 20 10, 16 28 C 24 26, 32 28, 40 30 Z"/>
+            <path d="M40 30 C 45 10, 60 10, 64 28 C 56 26, 48 28, 40 30 Z"/>
+            <path d="M40 30 C 35 5, 40 2, 45 5 C 42 12, 41 20, 40 30 Z"/>
+          </g>
+        </svg>
+      </div>
+      <div class="flex items-center justify-center">
+        <svg width="80" height="50" viewBox="0 0 80 50" class="animate-[floatPetal_3.8s_ease-in-out_infinite]">
+          <g fill="none" stroke="#ffa4ba" stroke-width="2">
+            <path d="M40 30 C 28 12, 14 8, 14 28 C 22 26, 32 28, 40 30 Z"/>
+            <path d="M40 30 C 52 12, 66 8, 66 28 C 58 26, 48 28, 40 30 Z"/>
+            <path d="M40 30 C 36 5, 40 3, 44 6 C 43 13, 41 21, 40 30 Z"/>
+          </g>
+        </svg>
+      </div>
+      <div class="flex items-center justify-center">
+        <svg width="80" height="50" viewBox="0 0 80 50" class="animate-[floatPetal_4.2s_ease-in-out_infinite]">
+          <g fill="none" stroke="#ffc0cb" stroke-width="2">
+            <path d="M40 30 C 30 14, 20 12, 18 28 C 24 26, 32 28, 40 30 Z"/>
+            <path d="M40 30 C 50 14, 60 12, 62 28 C 56 26, 48 28, 40 30 Z"/>
+            <path d="M40 30 C 36 5, 40 2, 44 5 C 42 12, 41 20, 40 30 Z"/>
+          </g>
+        </svg>
+      </div>
+      <div class="flex items-center justify-center">
+        <svg width="80" height="50" viewBox="0 0 80 50" class="animate-[floatPetal_3.6s_ease-in-out_infinite]">
+          <g fill="none" stroke="#ff9ab0" stroke-width="2">
+            <path d="M40 30 C 28 11, 16 9, 16 28 C 24 26, 32 28, 40 30 Z"/>
+            <path d="M40 30 C 52 11, 64 9, 64 28 C 56 26, 48 28, 40 30 Z"/>
+            <path d="M40 30 C 36 5, 40 2, 44 6 C 43 13, 41 21, 40 30 Z"/>
+          </g>
+        </svg>
+      </div>
+      <div class="flex items-center justify-center">
+        <svg width="80" height="50" viewBox="0 0 80 50" class="animate-[floatPetal_4.4s_ease-in-out_infinite]">
+          <g fill="none" stroke="#ffadc2" stroke-width="2">
+            <path d="M40 30 C 32 12, 18 11, 16 28 C 24 26, 32 28, 40 30 Z"/>
+            <path d="M40 30 C 48 12, 62 11, 64 28 C 56 26, 48 28, 40 30 Z"/>
+            <path d="M40 30 C 36 5, 40 2, 44 5 C 42 12, 41 20, 40 30 Z"/>
+          </g>
+        </svg>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mt-10">
+    <div class="tricolor-ribbon h-1 w-full"></div>
+    <div class="text-center text-xs py-4 text-slate-400">
+      Built with HTML5 · CSS · JS · Tailwind · SVG · Canvas · Math ✨
+    </div>
+  </footer>
+
+  <script>
+    /* =========================
+       MATRIX RAIN BACKGROUND
+       ========================= */
+    const matrixCanvas = document.getElementById('matrix');
+    const mCtx = matrixCanvas.getContext('2d');
+    const glyphs = '01ABCDEFGHIJKLMNOPQRSTUVWXYZभारतजयहिंद≠≈≤≥∑∏∞√∫∆λπµΩ';
+    let columns, drops, matrixRunning = true;
+
+    function resizeMatrix(){
+      matrixCanvas.width = window.innerWidth;
+      matrixCanvas.height = window.innerHeight;
+      const fontSize = 16; // px
+      columns = Math.floor(matrixCanvas.width / fontSize);
+      drops = Array(columns).fill(0);
+      mCtx.font = fontSize + 'px Fira Code, monospace';
+    }
+
+    function drawMatrix(){
+      if(!matrixRunning) return;
+      // Translucent trail
+      mCtx.fillStyle = 'rgba(10, 15, 31, 0.08)';
+      mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+      // Draw glyphs
+      for(let i=0; i<drops.length; i++){
+        const text = glyphs[Math.floor(Math.random()*glyphs.length)];
+        // Tricolor tint moving downward
+        const y = drops[i]*16;
+        const hue = (i/columns*360 + performance.now()/40) % 360;
+        mCtx.fillStyle = y % 3 === 0 ? 'rgba(255,153,51,0.85)' : (y % 3 === 1 ? 'rgba(255,255,255,0.7)' : 'rgba(19,136,8,0.85)');
+        mCtx.fillText(text, i*16, y);
+        if(y > matrixCanvas.height && Math.random() > 0.975){ drops[i] = 0; }
+        drops[i]++;
+      }
+    }
+
+    resizeMatrix();
+    window.addEventListener('resize', resizeMatrix);
+    setInterval(drawMatrix, 30);
+
+    document.getElementById('toggleRain').addEventListener('click', ()=>{
+      matrixRunning = !matrixRunning;
+      if(matrixRunning){ drawMatrix(); }
+    });
+
+    /* ======================================
+       ROSE CURVE (MATHEMATICAL FLOWER) FX
+       ====================================== */
+    const roseCanvas = document.getElementById('roses');
+    const rCtx = roseCanvas.getContext('2d');
+
+    function resizeRoses(){
+      roseCanvas.width = window.innerWidth;
+      roseCanvas.height = window.innerHeight;
+    }
+    resizeRoses();
+    window.addEventListener('resize', resizeRoses);
+
+    const blooms = [];
+    function addRose(x, y, tricolor=false){
+      const k = Math.floor(Math.random()*6)+3; // petals parameter
+      const a = Math.random()*30 + 40;        // scale
+      const hueBase = Math.random()*360;
+      blooms.push({
+        x, y, t:0, life: 180 + Math.random()*120, a, k, tricolor,
+        hueBase
+      });
+    }
+
+    function drawRose(b){
+      rCtx.save();
+      rCtx.translate(b.x, b.y);
+      const alpha = 1 - b.t/b.life;
+      for(let layer=0; layer<3; layer++){
+        const scale = 1 + layer*0.12;
+        rCtx.beginPath();
+        for(let i=0; i<=720; i++){
+          const theta = i * Math.PI/180;
+          const r = b.a * Math.sin(b.k * theta) * (1 + 0.06*layer);
+          const X = r * Math.cos(theta) * scale;
+          const Y = r * Math.sin(theta) * scale;
+          if(i===0) rCtx.moveTo(X, Y); else rCtx.lineTo(X, Y);
+        }
+        if(b.tricolor){
+          const seg = layer % 3;
+          rCtx.strokeStyle = [
+            'rgba(255,153,51,'+alpha+')',
+            'rgba(255,255,255,'+alpha+')',
+            'rgba(19,136,8,'+alpha+')'
+          ][seg];
+        } else {
+          const hue = (b.hueBase + layer*20 + b.t*0.5) % 360;
+          rCtx.strokeStyle = `hsla(${hue}, 80%, 60%, ${alpha})`;
+        }
+        rCtx.lineWidth = 1.6 - layer*0.2;
+        rCtx.stroke();
+      }
+      rCtx.restore();
+    }
+
+    function tick(){
+      // fade background to create trails
+      rCtx.fillStyle = 'rgba(0,0,0,0.04)';
+      rCtx.fillRect(0,0,roseCanvas.width, roseCanvas.height);
+      for(let i=blooms.length-1; i>=0; i--){
+        const b = blooms[i];
+        drawRose(b);
+        b.t++;
+        if(b.t > b.life) blooms.splice(i,1);
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
+
+    // Seed a few blooms automatically
+    const centerX = () => window.innerWidth/2;
+    const centerY = () => window.innerHeight/2;
+    for(let i=0;i<6;i++) addRose(centerX() + (Math.random()*200-100), centerY()+120 + (Math.random()*60-30), true);
+
+    // Interactions
+    document.getElementById('burst').addEventListener('click', ()=>{
+      for(let i=0;i<18;i++){
+        const angle = (i/18)*Math.PI*2;
+        addRose(centerX()+Math.cos(angle)*140, centerY()+Math.sin(angle)*60, false);
+      }
+    });
+    document.getElementById('tricolor').addEventListener('click', ()=>{
+      for(let i=0;i<15;i++){
+        const px = centerX() + (Math.random()*360-180);
+        const py = centerY() + (Math.random()*200-100);
+        addRose(px, py, true);
+      }
+    });
+
+    // Add bloom on pointer
+    window.addEventListener('pointerdown', (e)=> addRose(e.clientX, e.clientY, Math.random()>0.5));
+
+  </script>
+</body>
+</html>
